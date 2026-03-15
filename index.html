@@ -3,101 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Protocol | Member Analysis</title>
+    <title>Eid Mubarak Madam Ji ✨</title>
     <style>
         body {
             margin: 0;
-            background: #000;
-            color: white;
-            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, #001d12 0%, #000 100%); /* Deep Green/Black vibe */
+            color: #d4af37; /* Royal Gold Color */
+            font-family: 'Georgia', serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            flex-direction: column;
         }
 
-        .container {
-            width: 85%;
-            max-width: 400px;
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .message-container {
+            z-index: 10;
             text-align: center;
-            position: relative;
-        }
-
-        .slide {
-            display: none;
-            background: rgba(255, 255, 255, 0.1);
+            width: 85%;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.7);
             padding: 30px;
-            border-radius: 20px;
-            border: 2px solid #a020f0;
-            box-shadow: 0 0 20px #a020f0;
-            animation: fadeIn 0.5s ease-in-out;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
 
-        .active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #d4af37;
         }
 
-        h2 { color: #ff007f; text-transform: uppercase; }
-        p { font-size: 1.2rem; line-height: 1.5; margin: 20px 0; }
-
-        .btn {
-            background: #a020f0;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(160, 32, 240, 0.4);
+        #typing-text {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #f1e5ac;
         }
 
-        .btn:hover { background: #ff007f; }
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 20px;
+            background-color: #d4af37;
+            margin-left: 5px;
+            vertical-align: middle;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+        /* Moon Shape */
+        .moon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 15px 15px 0 0 #d4af37;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="slide active" id="s1">
-            <h2>System Scan ⚡</h2>
-            <p>Welcome to <b>Aura Protocol</b>. <br>Analyzing group members... <br>Tayyar ho roasting ke liye?</p>
-            <button class="btn" onclick="nextSlide('s1', 's2')">Start Scan 🚀</button>
-        </div>
+    <div class="moon"></div>
+    <canvas id="canvas"></canvas>
 
-        <div class="slide" id="s2">
-            <h2 style="color: #00f2ff;">Seen Zoners 👻</h2>
-            <p>"Inka Blue Tick aise aata hai jaise bijli ka jhatka, par reply dete waqt inka net 2G ho jata hai!"</p>
-            <button class="btn" onclick="nextSlide('s2', 's3')">Next Member ➡️</button>
-        </div>
-
-        <div class="slide" id="s3">
-            <h2 style="color: #ffff00;">Late Comers ⏳</h2>
-            <p>"Jab sab so rahe hote hain, tab ye aate hain aur kehte hain: 'Any updates?'. Bhai tumhara net slow hai ya tumhari life?"</p>
-            <button class="btn" onclick="nextSlide('s3', 's4')">Next Member ➡️</button>
-        </div>
-
-        <div class="slide" id="s4">
-            <h2 style="color: #39ff14;">Active Legends 👑</h2>
-            <p>"Inka typing status hamesha on rehta hai. Inko dekh kar lagta hai group inki rozi-roti hai!"</p>
-            <button class="btn" onclick="shareNow()">Share to Roast 😂</button>
-        </div>
+    <div class="message-container">
+        <h1>🌙 Eid Mubarak 🌙</h1>
+        <div id="typing-text"></div><span class="cursor"></span>
     </div>
 
     <script>
-        function nextSlide(curr, next) {
-            document.getElementById(curr).classList.remove('active');
-            document.getElementById(next).classList.add('active');
+        const textElement = document.getElementById('typing-text');
+        
+        // Aapka Special Message
+        const message = `Assalam-o-Alaikum, Madam Ji! ❤️\n\nIs Eid par meri taraf se aapko bohot saari duayein aur pyar...\n\nAllah aapki har khwahish puri kare aur aapki muskurahat hamesha barkarar rakhe.\n\nAap mere liye bohot special hain, aur ye Eid aapke bina adhoori hai.\n\nEid Mubarak to my most beautiful person! ✨🌙🌹`;
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < message.length) {
+                if (message.charAt(i) === '\n') {
+                    textElement.innerHTML += '<br>';
+                } else {
+                    textElement.innerHTML += message.charAt(i);
+                }
+                i++;
+                setTimeout(typeWriter, 60); // Speed control
+            }
         }
 
-        function shareNow() {
-            const text = "Oye! Aura Protocol ne hamare group ka 'Post-Mortem' kiya hai. Dekho tum kaun ho! 😂 \n\n";
-            const url = window.location.href;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, '_blank');
+        // --- Sparkles & Hearts Animation ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = Math.random() > 0.5 ? '#d4af37' : '#ff3366';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.01;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].size <= 0.3) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (particles.length < 100) {
+                particles.push(new Particle());
+            }
+            handleParticles();
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = () => {
+            typeWriter();
+            animate();
+        };
     </script>
 </body>
 </html>
