@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Madam Ji ✨</title>
+    <title>Eid Surprise for Madam Ji ✨</title>
     <style>
         body {
             margin: 0;
-            background-color: #050505;
-            color: #00ffcc; /* Hacker style start */
+            background: radial-gradient(circle at center, #001a1a 0%, #000 100%);
+            color: #00ffcc;
             font-family: 'Courier New', monospace;
             overflow: hidden;
             display: flex;
@@ -17,61 +17,48 @@
             height: 100vh;
         }
 
-        #terminal {
-            width: 80%;
-            max-width: 600px;
-            z-index: 10;
-        }
-
-        .heart-tree-container {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            justify-content: center;
-            align-items: flex-end;
-        }
-
-        canvas {
-            position: absolute;
-            bottom: 0;
-        }
+        #terminal { width: 80%; max-width: 600px; z-index: 50; }
 
         .moon {
             position: absolute;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 100px;
+            bottom: -150px;
+            left: 70%;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            box-shadow: 15px 15px 0 0 #d4af37;
-            transition: all 4s ease-out;
-            opacity: 0;
+            box-shadow: 15px 15px 0 0 #f0e68c;
+            transition: all 6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 0 20px rgba(240, 230, 140, 0.5));
+            z-index: 5;
         }
 
-        .eid-message {
+        canvas { position: absolute; bottom: 0; left: 0; z-index: 10; }
+
+        .message-box {
             position: absolute;
-            top: 20%;
-            left: 10%;
-            width: 300px;
+            top: 15%;
+            left: 8%;
+            width: 350px;
             color: #f1e5ac;
             font-family: 'Georgia', serif;
             display: none;
-            z-index: 20;
-            background: rgba(0,0,0,0.6);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #d4af37;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         .cursor {
             display: inline-block;
-            width: 8px;
-            height: 18px;
+            width: 10px;
+            height: 20px;
             background: #d4af37;
             animation: blink 0.8s infinite;
+            vertical-align: middle;
         }
         @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
     </style>
@@ -79,31 +66,32 @@
 <body>
 
     <div id="terminal"></div>
-
     <div class="moon" id="moon"></div>
-    <div class="heart-tree-container" id="mainScene">
-        <canvas id="treeCanvas"></canvas>
-    </div>
+    <canvas id="gardenCanvas"></canvas>
 
-    <div class="eid-message" id="msgBox">
+    <div class="message-box" id="msgBox">
         <div id="typing-text"></div><span class="cursor"></span>
     </div>
 
     <script>
         const terminal = document.getElementById('terminal');
         const moon = document.getElementById('moon');
-        const mainScene = document.getElementById('mainScene');
         const msgBox = document.getElementById('msgBox');
         const typingText = document.getElementById('typing-text');
+        const canvas = document.getElementById('gardenCanvas');
+        const ctx = canvas.getContext('2d');
 
-        // Hacker Style Intro Lines
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // 1. Intro Coding Sequence
         const lines = [
-            "> Initializing Eid special module...",
-            "> Loading Madam Ji's surprise...",
-            "> Calculating moon position...",
-            "> Status: Moon sighted! 🌙",
-            "> Executing 'Make_Her_Smile.exe'...",
-            "> Success! Opening magic..."
+            "> [System] Accessing secure heart_files...",
+            "> [System] Searching for 'Most Beautiful Person'...",
+            "> [Result] Madam Ji found. ❤️",
+            "> [System] Sighting Eid Moon...",
+            "> [System] Initializing Magical Garden... 3.. 2.. 1..",
+            "> [Success] Happy Eid Mubarak! ✨"
         ];
 
         let lineIdx = 0;
@@ -111,31 +99,47 @@
             if (lineIdx < lines.length) {
                 terminal.innerHTML += `<p>${lines[lineIdx]}</p>`;
                 lineIdx++;
-                setTimeout(showTerminal, 1000);
+                setTimeout(showTerminal, 1500); // Slow intro
             } else {
                 setTimeout(startMagic, 1000);
             }
         }
 
+        // 2. Start Magic (Moon + Garden)
         function startMagic() {
             terminal.style.display = 'none';
-            // Moon rises
-            moon.style.opacity = '1';
-            moon.style.bottom = '70%';
+            moon.style.bottom = '75%';
+            moon.style.left = '65%';
             
             setTimeout(() => {
-                mainScene.style.display = 'flex';
-                initTree();
-                setTimeout(startTyping, 2500);
+                drawGarden(); // Grass and Flowers first
+                setTimeout(() => {
+                    growTree(canvas.width / 2, canvas.height, 100, 0, 15);
+                    setTimeout(startTyping, 3000);
+                }, 1000);
             }, 1000);
         }
 
-        // Tree Logic
-        const canvas = document.getElementById('treeCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // 3. Drawing Garden (Grass & Flowers)
+        function drawGarden() {
+            // Draw Grass
+            for (let i = 0; i < canvas.width; i += 2) {
+                ctx.strokeStyle = `rgb(0, ${Math.random() * 50 + 40}, 0)`;
+                ctx.beginPath();
+                ctx.moveTo(i, canvas.height);
+                ctx.lineTo(i + Math.random() * 10 - 5, canvas.height - Math.random() * 40 - 20);
+                ctx.stroke();
+            }
+            // Add some small stars in background
+            for (let i = 0; i < 50; i++) {
+                ctx.fillStyle = "white";
+                ctx.beginPath();
+                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height * 0.6, Math.random() * 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
+        // 4. Tree Logic
         function drawHeart(x, y, size, color) {
             ctx.fillStyle = color;
             ctx.beginPath();
@@ -150,7 +154,7 @@
         function growTree(x, y, len, angle, width) {
             ctx.beginPath();
             ctx.save();
-            ctx.strokeStyle = "#3d2516";
+            ctx.strokeStyle = "#2d1b0d";
             ctx.lineWidth = width;
             ctx.translate(x, y);
             ctx.rotate(angle * Math.PI / 180);
@@ -158,33 +162,31 @@
             ctx.lineTo(0, -len);
             ctx.stroke();
 
-            if (len < 12) {
-                const colors = ['#ff4d6d', '#ff758f', '#d4af37', '#ffd700'];
-                drawHeart(0, -len, 10, colors[Math.floor(Math.random()*colors.length)]);
+            if (len < 10) {
+                const colors = ['#ff4d6d', '#d4af37', '#ffffff'];
+                drawHeart(0, -len, 8, colors[Math.floor(Math.random()*colors.length)]);
                 ctx.restore();
                 return;
             }
 
             setTimeout(() => {
-                growTree(0, -len, len * 0.75, angle - 22, width * 0.7);
-                growTree(0, -len, len * 0.75, angle + 22, width * 0.7);
-            }, 100);
+                growTree(0, -len, len * 0.78, angle - 22, width * 0.7);
+                growTree(0, -len, len * 0.78, angle + 22, width * 0.7);
+            }, 150);
             ctx.restore();
         }
 
-        function initTree() {
-            growTree(canvas.width/2, canvas.height, 120, 0, 12);
-        }
-
+        // 5. Long Heartfelt Message
         function startTyping() {
             msgBox.style.display = 'block';
-            const msg = "🌙 Eid Mubarak, Madam Ji! ❤️\n\nAap is chand ki tarah hamesha chamakti rahein.\n\nMeri har Eid sirf aapki khushi se judi hai.\n\nHope you love this little surprise! ✨🌹";
+            const msg = `Assalam-o-Alaikum, Madam Ji! ❤️\n\nEid ka Chand nazar aa gaya hai, aur is khushi ke mauqe par main aapko batana chahta hoon ke aap mere liye kitni khaas hain...\n\nJaise ye garden khil raha hai, meri dua hai ke aapki zindagi bhi hamesha khushiyon se mehakti rahe. 🌹\n\nAllah aapki har khwahish puri kare, aapko hamesha salamat rakhe, aur hamari ye dosti/pyar hamesha barkarar rahe.\n\nAapki muskurahat hi meri asli Eid hai. ✨🌙\n\nEid Mubarak to the most beautiful person in my world! 💖😊`;
+            
             let i = 0;
             function type() {
                 if (i < msg.length) {
                     typingText.innerHTML += msg.charAt(i) === '\n' ? '<br>' : msg.charAt(i);
                     i++;
-                    setTimeout(type, 70);
+                    setTimeout(type, 80); // Speed set for ~1 minute total experience
                 }
             }
             type();
